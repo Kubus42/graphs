@@ -17,7 +17,7 @@ jobs:
       with:
         python-version: '3.x' 
         architecture: 'x64' 
-    - run: python workflow_test.py
+    - run: python tests/workflow_test.py
      
      
      
