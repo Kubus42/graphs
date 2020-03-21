@@ -4,7 +4,6 @@ import numpy as np
 
 
 class VertexTester(TestCase):
-
     def setUp(self) -> None:
         self.vertex_1 = Vertex("vertex_1")
         self.vertex_2 = Vertex("vertex_2")
@@ -24,8 +23,18 @@ class VertexTester(TestCase):
         np.testing.assert_array_equal(self.vertex_1.neighbors, [self.vertex_2])
 
 
-class GraphTester(TestCase):
+class GraphSetupTester(TestCase):
+    def setUp(self) -> None:
+        self.graph = Graph()
 
+    def test_add_vertex_no_vertex(self):
+        np.testing.assert_raises(ValueError, self.graph.add_vertex, "vertex")
+
+    def test_add_edge_edge_does_not_exist(self):
+        np.testing.assert_raises(ValueError, self.graph.add_edge, "vertex1", "vertex2")
+
+
+class GraphTester(TestCase):
     def setUp(self) -> None:
         v1 = Vertex("vertex_1")
         v2 = Vertex("vertex_2")
