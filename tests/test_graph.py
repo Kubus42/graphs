@@ -27,18 +27,21 @@ class VertexTester(TestCase):
 class GraphTester(TestCase):
 
     def setUp(self) -> None:
-        vertices = [str(i) for i in range(4)]
-        edges = {"0": [("1", 1), ("2", 1), ("3", 1)],
-             "1": [("0", 1), ("3", 1)],
-             "2": [("0", 1), ("3", 1)],
-             "3": [("0", 1), ("1", 1), ("2", 1)]}
-        self.graph = Graph(vertices=vertices, edges=edges)
+        v1 = Vertex("vertex_1")
+        v2 = Vertex("vertex_2")
+        v3 = Vertex("vertex_3")
+        self.graph = Graph()
+        self.graph.add_vertex(v1)
+        self.graph.add_vertex(v2)
+        self.graph.add_vertex(v3)
+        self.graph.add_edge("vertex_1", "vertex_2")
+        self.graph.add_edge("vertex_1", "vertex_3")
 
     def test_number_of_edges(self):
-        np.testing.assert_array_equal(self.graph.n_edges, 10)
+        np.testing.assert_array_equal(self.graph.n_edges, 4)
 
     def test_number_of_vertices(self):
-        np.testing.assert_array_equal(self.graph.n_vertices, 4)
+        np.testing.assert_array_equal(self.graph.n_vertices, 3)
 
     def test_vertex_degree(self):
-        np.testing.assert_array_equal(self.graph.vertex_degree("0"), 3)
+        np.testing.assert_array_equal(self.graph.vertex_degree("vertex_1"), 2)

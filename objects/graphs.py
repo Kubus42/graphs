@@ -1,10 +1,13 @@
-from typing import List, Union
+from typing import List, Union, Dict
 
 
 class Vertex:
-    def __init__(self, name):
+    def __init__(self, name: str):
         self.name = name
         self.neighbors = []
+
+    def __lt__(self, vertex: "Vertex"):
+        return self.name < vertex.name
 
     def add_neighbors(self, vertices: Union["Vertex", List["Vertex"]]):
         if isinstance(vertices, Vertex):
@@ -23,21 +26,53 @@ class Vertex:
 
 
 class Graph:
-    def __init__(self, vertices: list, edges: dict):
-        self.vertices = vertices
-        self.edges = edges
-        self.n_vertices = len(self.vertices)
-        self.n_edges = len([v[0] for vv in self.edges.values() for v in vv])
+    def __init__(self):
+        self.vertices: Dict[str, Vertex] = {}
+        self.n_vertices = 0
+        self.n_edges = 0
+
+    def add_vertex(self, vertex: Vertex):
+        if isinstance(vertex, Vertex):
+            if vertex.name not in self.vertices:
+                self.vertices[vertex.name] = vertex
+                self.n_vertices += 1
+            else:
+                print("There already exists a vertex with this name.")
+        else:
+            raise ValueError("Vertices must be of class 'Vertex'.")
+
+    def add_edge(self, u: str, v: str):
+        if u in self.vertices and v in self.vertices:
+            if u not in self.vertices[v].neighbors:
+                self.vertices[v].add_neighbors(self.vertices[u])
+                self.n_edges += 1
+            if v not in self.vertices[u].neighbors:
+                self.vertices[u].add_neighbors(self.vertices[v])
+                self.n_edges += 1
+        else:
+            raise ValueError("Either 'u' or 'v' is not a vertex of the graph.")
 
     def vertex_degree(self, vertex: str):
-        return len([v[0] for v in self.edges[vertex]])
+        return len(self.vertices[vertex].neighbors)
+
+    def print_graph(self):
+        for vertex in self.vertices.values():
+            print("Vertex: " + vertex.name + ", neighbors: " + str([v.name for v in vertex.neighbors]))
 
 
 if __name__ == "__main__":
     v1 = Vertex("vertex_1")
     v2 = Vertex("vertex_2")
-    print(v1.name)
-    v1.add_neighbor(v2)
-    print(v1.neighbors[0].name)
+    v3 = Vertex("vertex_3")
+
+    graph = Graph()
+    graph.add_vertex(v1)
+    graph.add_vertex(v2)
+    graph.add_vertex(v3)
+
+    graph.add_edge("vertex_1", "vertex_2")
+    graph.add_edge("vertex_1", "vertex_3")
+
+    graph.print_graph()
 
 
