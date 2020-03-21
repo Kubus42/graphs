@@ -3,8 +3,8 @@ from typing import List, Union, Dict
 
 class Vertex:
     def __init__(self, name: str):
-        self.name = name
-        self.neighbors = []
+        self.name: str = name
+        self.neighbors: List["Vertex"] = []
 
     def __lt__(self, vertex: "Vertex"):
         return self.name < vertex.name
@@ -28,8 +28,8 @@ class Vertex:
 class Graph:
     def __init__(self):
         self.vertices: Dict[str, Vertex] = {}
-        self.n_vertices = 0
-        self.n_edges = 0
+        self.n_vertices: int = 0
+        self.n_edges: int = 0
 
     def add_vertex(self, vertex: Vertex):
         if isinstance(vertex, Vertex):
